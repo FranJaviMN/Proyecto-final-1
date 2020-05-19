@@ -39,3 +39,27 @@ if peticion_classes.status_code == 200:
 else:
     print("Fallo al obtener las clases, saltando campo...")
     elec_class=""
+
+#Segundo una peticion para que nos muestre las rarezas disponibles
+
+peticion_rareza=requests.get(URL_BASE_PARAMETROS+"rarities?locale=es_ES",headers=headers)
+
+if peticion_rareza.status_code == 200:
+    lista_rarezas=[]
+    print("Las rarezas de cartas disponibles son las siguientes: ")
+    doc_rarezas=peticion_rareza.json()
+    for rareza in doc_rarezas:
+        print(rareza["slug"])
+        lista_rarezas.append(rareza["slug"])
+    lista_rarezas.append("")
+
+    elec_rareza=str(input("Dime que tipo de rareza de cartas quieres consultar, si quieres consultar todas dejar en blanco: "))
+
+    while elec_rareza not in lista_rarezas:
+        print("Rarezas disponibles")
+        for rareza in lista_rarezas:
+            print(rareza)
+        elec_rareza=str(input("Dime que tipo de rareza de cartas quieres consultar, si quieres consultar todas dejar en blanco: "))
+else:
+    print("Fallo al obtener las rarezas, saltando campo...")
+    elec_rareza=""
