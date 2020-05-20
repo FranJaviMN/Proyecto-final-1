@@ -71,77 +71,89 @@ print("Las cartas que coinciden con las busqueda son las siguientes: ")
     
 if elec_rareza == "" and elec_class == "":
     peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page=1",headers=headers)
-    doc_cartas=peticion_todas_cartas.json()
-    for cartas in doc_cartas["cards"]:
-        print(cartas["name"])
-    print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
-    print()
+    if peticion_todas_cartas.status_code == 200:
+        doc_cartas=peticion_todas_cartas.json()
+        for cartas in doc_cartas["cards"]:
+            print(cartas["name"])
+        print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
+        print()
 
 #Al haber en muchos de los casos varias paginas de cartas, el usuario vera solo la primera pagina, luego se le preguntara si 
 #Quiere ver la siguiente pagina, en caso contrario el programa terminara.
 
-    eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-    pagina=2
-    while eleccion == "Si" and pagina < doc_cartas["pageCount"]:
-        peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina),headers=headers)
-        doc_cartas=peticion_todas_cartas.json()
-        for cartas in doc_cartas["cards"]:
-            print(cartas["name"])
-        print("Pagina", pagina, "de", doc_cartas["pageCount"])
         eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-        pagina=pagina+1
+        pagina=2
+        while eleccion == "Si" and pagina < doc_cartas["pageCount"]:
+            peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina),headers=headers)
+            doc_cartas=peticion_todas_cartas.json()
+            for cartas in doc_cartas["cards"]:
+                print(cartas["name"])
+            print("Pagina", pagina, "de", doc_cartas["pageCount"])
+            eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
+            pagina=pagina+1
+    else:
+        print('Error al obtener la informacuin.')
         
 elif elec_class != "" and elec_rareza != "":
     peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
-    doc_cartas=peticion_todas_cartas.json()
-    for cartas in doc_cartas["cards"]:
-        print(cartas["name"])
-    print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
-    print()
-    eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-    pagina=2
-    while eleccion == "Si" and pagina < doc_cartas["pageCount"]:
-        peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina)+"class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
+    if peticion_todas_cartas.status_code == 200:
         doc_cartas=peticion_todas_cartas.json()
         for cartas in doc_cartas["cards"]:
             print(cartas["name"])
-        print("Pagina", pagina, "de", doc_cartas["pageCount"])
+        print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
+        print()
         eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-        pagina=pagina+1
+        pagina=2
+        while eleccion == "Si" and pagina < doc_cartas["pageCount"]:
+            peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina)+"class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
+            doc_cartas=peticion_todas_cartas.json()
+            for cartas in doc_cartas["cards"]:
+                print(cartas["name"])
+            print("Pagina", pagina, "de", doc_cartas["pageCount"])
+            eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
+            pagina=pagina+1
+    else:
+        print('Error al obtener la informacion')
 
 elif elec_class == "" and elec_rareza != "":
     peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
-    doc_cartas=peticion_todas_cartas.json()
-    for cartas in doc_cartas["cards"]:
-        print(cartas["name"])
-    print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
-    print()
-    eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-    pagina=2
-    while eleccion == "Si" and pagina <= doc_cartas["pageCount"]:
-        peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina)+"class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
+    if peticion_todas_cartas.status_code == 200:
         doc_cartas=peticion_todas_cartas.json()
         for cartas in doc_cartas["cards"]:
             print(cartas["name"])
-        print("Pagina", pagina, "de", doc_cartas["pageCount"])
+        print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
+        print()
         eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-        pagina=pagina+1
+        pagina=2
+        while eleccion == "Si" and pagina <= doc_cartas["pageCount"]:
+            peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina)+"class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
+            doc_cartas=peticion_todas_cartas.json()
+            for cartas in doc_cartas["cards"]:
+                print(cartas["name"])
+            print("Pagina", pagina, "de", doc_cartas["pageCount"])
+            eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
+            pagina=pagina+1
+    else:
+        print('Error al obtener la informacion.')
 
         
 else:
     peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
-    doc_cartas=peticion_todas_cartas.json()
-    for cartas in doc_cartas["cards"]:
-        print(cartas["name"])
-    print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
-    print()
-    eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-    pagina=2
-    while eleccion == "Si" and pagina <= doc_cartas["pageCount"]:
-        peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina)+"class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
+    if peticion_todas_cartas.status_code == 200:
         doc_cartas=peticion_todas_cartas.json()
         for cartas in doc_cartas["cards"]:
             print(cartas["name"])
-        print("Pagina", pagina, "de", doc_cartas["pageCount"])
+        print("Pagina", doc_cartas["page"], "de", doc_cartas["pageCount"])
+        print()
         eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
-        pagina=pagina+1
+        pagina=2
+        while eleccion == "Si" and pagina <= doc_cartas["pageCount"]:
+            peticion_todas_cartas=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&page="+str(pagina)+"class="+elec_class.lower()+"&rarity="+elec_rareza.lower(),headers=headers)
+            doc_cartas=peticion_todas_cartas.json()
+            for cartas in doc_cartas["cards"]:
+                print(cartas["name"])
+            print("Pagina", pagina, "de", doc_cartas["pageCount"])
+            eleccion=str(input("¿Quiere continua a la siguiente pagina? Si/No: "))
+            pagina=pagina+1
+    else:
+        print('Error al obtener la informacion.')
