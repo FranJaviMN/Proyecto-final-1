@@ -10,4 +10,22 @@ headers={"Authorization":"bearer "+key}
 URL_BASE_CARTAS = "https://us.api.blizzard.com/"
 URL_BASE_PARAMETROS = "https://us.api.blizzard.com/hearthstone/metadata/"
 
+#Aqui vamos a hacer la peticion de clases disponibles, si se hace bien se seguira el proceso, sino, saldra del programa
 
+peticion_classes=requests.get(URL_BASE_PARAMETROS+"classes?locale=es_ES",headers=headers)
+
+if peticion_classes.status_code == 200:
+    print("Las clases disponibles son las siguientes: ")
+    lista_clases=[]
+    doc_classes = peticion_classes.json()
+    for clas in doc_classes:
+        lista_clases.append(clas["slug"])
+        print(clas['slug'])
+    lista_clases.append("")
+    eleccion=str(input('Dime que clase quieres consultar(pulsar enter para ver todo): '))
+    print()
+    while eleccion not in lista_clases:
+        print('Clase no encontrada')
+        for clas in lista_clases:
+            print(clas)
+        eleccion=str(input('Dime que clase quieres usar(dejar en blanco si quieres ver todas): '))
