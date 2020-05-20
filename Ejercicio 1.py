@@ -29,3 +29,24 @@ if peticion_classes.status_code == 200:
         for clas in lista_clases:
             print(clas)
         eleccion=str(input('Dime que clase quieres usar(dejar en blanco si quieres ver todas): '))
+        
+#Aqui vamos a hacer la consulta sobre la clase que hayamos elegido, al haber dos posibilidades debemos de dividir en dos, la primera
+#cuando queremos ver todos los heroes y la segunda cuando hemos introducido una clase.
+    if eleccion == "":
+        peticion_heroes=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&type=hero", headers=headers)
+        if peticion_heroes.status_code == 200:
+            print('Estos son todos los heroes: ')
+            doc_heores = peticion_heroes.json()
+            for heroes in doc_heores['cards']:
+                print(heroes['name']+' Enlace para ver la imagen de la carta: '+heroes['image'])
+    else:
+        peticion_heroes=requests.get(URL_BASE_CARTAS+"hearthstone/cards?locale=es_ES&type=hero&class="+eleccion, headers=headers)
+        if peticion_heroes.status_code == 200:
+            print('Estos son todos los heroes: ')
+            doc_heores = peticion_heroes.json()
+            for heroes in doc_heores['cards']:
+                print(heroes['name']+' Enlace para ver la imagen de la carta: '+heroes['image'])
+            
+else:
+    print('ERROR AL OBTENER INFORMACION, INTENTE DE NUEVO')
+
